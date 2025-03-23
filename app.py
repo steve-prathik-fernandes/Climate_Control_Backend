@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from datetime import datetime
 
 app = Flask(__name__)
+CORS(app)
 
 # Mock AI model function (replace this with the actual AI model call)
 def call_ai_model(data):
@@ -23,7 +25,7 @@ def submit_booking():
         motion_sensor = 1  # 1 for motion detected, 0 for no motion
         co2_sensor = 450   # CO2 level in ppm
         humidity = 60      # Humidity in percentage
-        temperature = 22   # Temperature in Celsius (hardcoded, but you can use room_temperature)
+        temperature = 22   # Temperature in Fahreinheit (hardcoded, but you can use room_temperature)
         room_volume = 200   # Volume of the room in cubic meters
 
         # Prepare the data to send to the AI model
@@ -55,3 +57,4 @@ def submit_booking():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    
