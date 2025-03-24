@@ -6,13 +6,16 @@ from datetime import datetime, timedelta
 app = Flask(__name__)
 CORS(app)
 
-
+#calling ai model
 def call_ai_model(ai_input):
 
     print("Data sent to AI model:", ai_input)
     # Assuming the AI model returns a response
-    return {"predicted_time": "some_result"}
 
+    predict_time=20
+    return predict_time
+
+#adding minutes to the booking time 
 def add_minutes_to_time(time_str, minutes_to_add):
     # Convert the input time string to a datetime object
     time_format = "%H:%M"
