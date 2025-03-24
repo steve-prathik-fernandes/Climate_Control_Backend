@@ -6,16 +6,18 @@ import numpy as np
 import joblib  
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=["http://localhost:4200"])
 
-
+#Loads the ML model with data
 def load_hvac_model(model_path):
     try:
         model = joblib.load(model_path)
         return model
     except FileNotFoundError:
         raise ValueError("Model file not found. Ensure 'hvac_model.joblib' exists in the specified path.")
-
+    
+# Triggers the ML model to get the predicted time to start the heating process 
+# based on outside temp and inside room temperature to avoid unnecessary energy wastes.
 def call_ai_model(ai_input):
     model = load_hvac_model("hvac_model.joblib")
     
@@ -54,6 +56,7 @@ def add_minutes_to_time(book_time_hour, minutes_to_add):
     
     return new_time_str
 
+#API
 @app.route('/submit-booking', methods=['POST'])
 def submit_booking():
     try:
@@ -80,10 +83,9 @@ def submit_booking():
         if(calc_time<0):
               calc_time=None
         
-
-      
         original_book_time = f"{book_time}:00"
 
+ # Success Response
         return jsonify({
             "status": "success",
             "message": "Data processed successfully",
@@ -93,7 +95,8 @@ def submit_booking():
             "inside_temp": inside_temp,
             "calculated_time_adjustment": calc_time
         }), 200
-
+    
+#Error response
     except Exception as e:
         return jsonify({
             "status": "error",
